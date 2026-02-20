@@ -34,7 +34,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 # our training models will not be able to handle
 # raw text input in the data.
 # vectorization is done to convert it into number
-# based data that the model can learn off of.
+# based data (vector) that the model can learn off of.
 preprocess = ColumnTransformer(
     transformers=[
         ('text', TfidfVectorizer(stop_words='english'), 'CONTENT'),
@@ -42,9 +42,9 @@ preprocess = ColumnTransformer(
     ])
 pred = {}
 
-# Extensive Method Testing
-# 5 different classification methods are tested
-# Some methods have differentiations that are tested
+# Extensive Technique Testing
+# 5 different classification techniques are tested
+# Some techniques have differentiations that are tested
 # The best version is selected for final comparisons
 
 # Naive Bayes
@@ -91,8 +91,8 @@ print("Recall:    %.3f   %.3f" %(recall_score(y_test, pred["lSVM"]), recall_scor
 print("F1:        %.3f   %.3f\n\n" %(f1_score(y_test, pred["lSVM"]), f1_score(y_test, pred["dSVM"])))
 
 
-# KNearestNeighbours
-print("====================\nK-Nearest Neighbours\n====================")
+# NearestNeighbours
+print("==================\nNearest Neighbours\n====================")
 print("K:         ", end="")
 
 k_range = range(3, 8)
@@ -158,12 +158,23 @@ print("F1:         %.3f   %.3f   %.3f     %.3f   %.3f   %.3f     %.3f   %.3f   %
 
 print("===============\nThe Best Models\n===============")
 print("Model Type: Naive Bayes  SVM    Nearest Neighbours  Neural Network  Random Forest\n---------------------------------------------------------------------------------")
-print("Accuracy:   %.3f        %.3f  %.3f               %.3f           %.3f" %(accuracy_score(y_test, pred["cNB"]), accuracy_score(y_test, pred["lSVM"]), accuracy_score(y_test, pred["neigh3"]), accuracy_score(y_test, pred["mlp1"]), accuracy_score(y_test, pred["forest100-20"])))
-print("Precision:  %.3f        %.3f  %.3f               %.3f           %.3f" %(precision_score(y_test, pred["cNB"]), precision_score(y_test, pred["lSVM"]), precision_score(y_test, pred["neigh3"]), precision_score(y_test, pred["mlp1"]), precision_score(y_test, pred["forest100-20"])))
-print("Recall:     %.3f        %.3f  %.3f               %.3f           %.3f" %(recall_score(y_test, pred["cNB"]), recall_score(y_test, pred["lSVM"]), recall_score(y_test, pred["neigh3"]), recall_score(y_test, pred["mlp1"]), recall_score(y_test, pred["forest100-20"])))
-print("F1:         %.3f        %.3f  %.3f               %.3f           %.3f\n\n" %(f1_score(y_test, pred["cNB"]), f1_score(y_test, pred["lSVM"]), f1_score(y_test, pred["neigh3"]), f1_score(y_test, pred["mlp1"]), f1_score(y_test, pred["forest100-20"])))
+print("Accuracy:   %.3f        %.3f  %.3f               %.3f           %.3f" %(accuracy_score(y_test, pred["cNB"]), accuracy_score(y_test, pred["lSVM"]), accuracy_score(y_test, pred["neigh3"]), accuracy_score(y_test, pred["mlp1"]), accuracy_score(y_test, pred["forest200-None"])))
+print("Precision:  %.3f        %.3f  %.3f               %.3f           %.3f" %(precision_score(y_test, pred["cNB"]), precision_score(y_test, pred["lSVM"]), precision_score(y_test, pred["neigh3"]), precision_score(y_test, pred["mlp1"]), precision_score(y_test, pred["forest200-None"])))
+print("Recall:     %.3f        %.3f  %.3f               %.3f           %.3f" %(recall_score(y_test, pred["cNB"]), recall_score(y_test, pred["lSVM"]), recall_score(y_test, pred["neigh3"]), recall_score(y_test, pred["mlp1"]), recall_score(y_test, pred["forest200-None"])))
+print("F1:         %.3f        %.3f  %.3f               %.3f           %.3f\n\n" %(f1_score(y_test, pred["cNB"]), f1_score(y_test, pred["lSVM"]), f1_score(y_test, pred["neigh3"]), f1_score(y_test, pred["mlp1"]), f1_score(y_test, pred["forest200-None"])))
 
 # print confusion matrices for best models
+print("\n================\nConfusion Matrix\n================")
+print("Naive Bayes\n-----------")
+print(confusion_matrix(y_test, pred["cNB"]), "\n")
+print("Support Vector Machines\n-----------------------")
+print(confusion_matrix(y_test, pred["lSVM"]), "\n")
+print("Nearest Neighbours\n------------------")
+print(confusion_matrix(y_test, pred["neigh3"]), "\n")
+print("Artificial Neural Network\n--------------------------")
+print(confusion_matrix(y_test, pred["mlp1"]), "\n")
+print("Random Forests\n--------------")
+print(confusion_matrix(y_test, pred["forest200-None"]), "\n")
 
 # test tool
 neigh = Pipeline([
@@ -177,7 +188,7 @@ forest = Pipeline([
     ('clf', RandomForestClassifier(n_estimators=200, random_state=42))
 ])
 forest.fit(X_train, y_train)
-
+print("====================\nCREATE YOUR OWN SPAM\n====================")  
 username = ""
 while True:
     name = input("User Name (leave blank to reuse): ")
